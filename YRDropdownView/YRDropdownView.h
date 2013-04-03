@@ -3,6 +3,7 @@
 //  YRDropdownViewExample
 //
 //  Created by Eli Perkins on 1/27/12.
+//  Fork by Marco Marengo on 4/3/13.
 //  Copyright (c) 2012 One Mighty Roar. All rights reserved.
 //
 
@@ -17,15 +18,15 @@ typedef void (^YRTapBlock)(void);
     NSString *detailText;
     UILabel *titleLabel;
     UILabel *detailLabel;
-    //UIImage *backgroundImage;
+    UIImage *backgroundImage;
     UIImageView *backgroundImageView;
-    //UIImage *accessoryImage;
+    UIImage *accessoryImage;
     UIImageView *accessoryImageView;
-    UIColor *titleLabelColor;
-    UIColor *detailLabelColor;
     SEL onTouch;
     NSDate *showStarted;
     BOOL shouldAnimate;
+    BOOL isWindow;
+    BOOL isView;
     
     YRTapBlock          _tapBlock;
     dispatch_queue_t    _tapQueue;
@@ -33,20 +34,13 @@ typedef void (^YRTapBlock)(void);
 
 @property (copy) NSString *titleText;
 @property (copy) NSString *detailText;
-
-#if !(__has_feature(objc_arc))
-@property (nonatomic, retain) UIImage *accessoryImage;
-@property (nonatomic, retain) UIImage *backgroundImage;
-#else
-@property (nonatomic, strong) UIImage *accessoryImage;
-@property (nonatomic, strong) UIImage *backgroundImage;
-#endif
-
+@property (assign) UIImage *accessoryImage;
 @property (assign) float minHeight;
-@property (retain) UIColor *titleLabelColor;
-@property (retain) UIColor *detailLabelColor;
+@property (nonatomic, assign) UIImage *backgroundImage;
 @property (nonatomic, assign) SEL onTouch;
 @property (assign) BOOL shouldAnimate;
+@property (assign) BOOL isWindow;
+@property (assign) BOOL isView;
 
 @property (nonatomic, copy) YRTapBlock  tapBlock;
 
@@ -77,33 +71,15 @@ typedef void (^YRTapBlock)(void);
                               animated:(BOOL)animated
                              hideAfter:(float)delay;
 
-+ (YRDropdownView *)showDropdownInView:(UIView *)view
-                                 title:(NSString *)title
-                                detail:(NSString *)detail
-                                 image:(UIImage *)image
-                       backgroundImage:(UIImage *)backgroundImage
-                              animated:(BOOL)animated
-                             hideAfter:(float)delay;
-
-+ (YRDropdownView *)showDropdownInView:(UIView *)view
-                                 title:(NSString *)title
-                                detail:(NSString *)detail
-                                 image:(UIImage *)image
-                       backgroundImage:(UIImage *)backgroundImage
-                       titleLabelColor:(UIColor *)titleLabelColor
-                      detailLabelColor:(UIColor *)detailLabelColor
-                              animated:(BOOL)animated
-                             hideAfter:(float)delay;
-
 + (BOOL)hideDropdownInView:(UIView *)view;
 + (BOOL)hideDropdownInView:(UIView *)view animated:(BOOL)animated;
 
+
+- (void)setTapBlock:(YRTapBlock)tapBlock withQueue:(dispatch_queue_t)dispatchQueue;
+
 #pragma mark -
+- (void)flipViewAccordingToStatusBarOrientation:(NSNotification *)notification;
 - (void)show:(BOOL)animated;
 - (void)hide:(BOOL)animated;
-
--(void)setTapBlock:(YRTapBlock)tapBlock
-         withQueue:(dispatch_queue_t)dispatchQueue;
-
 
 @end
