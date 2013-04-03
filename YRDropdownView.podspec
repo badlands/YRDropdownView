@@ -9,6 +9,6 @@ Pod::Spec.new do |s|
   s.source_files = 'YRDropdownView'
   
   # Platform setup
-  s.requires_arc = true
+  s.requires_arc = false
   s.ios.deployment_target = '5.0'
 end
