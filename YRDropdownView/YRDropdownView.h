@@ -12,15 +12,20 @@
 
 typedef void (^YRTapBlock)(void);
 
+typedef enum {
+    YRDefaultStyle,
+    YRErrorStyle
+} YRDropdownViewStyle;
+
 @interface YRDropdownView : UIView
 {
     NSString *titleText;
     NSString *detailText;
     UILabel *titleLabel;
     UILabel *detailLabel;
-    UIImage *backgroundImage;
+//    UIImage *backgroundImage;
     UIImageView *backgroundImageView;
-    UIImage *accessoryImage;
+//    UIImage *accessoryImage;
     UIImageView *accessoryImageView;
     SEL onTouch;
     NSDate *showStarted;
@@ -34,9 +39,10 @@ typedef void (^YRTapBlock)(void);
 
 @property (copy) NSString *titleText;
 @property (copy) NSString *detailText;
-@property (assign) UIImage *accessoryImage;
+//@property (assign) UIImage *accessoryImage;
+@property (nonatomic, copy) UIImage *accessoryImage;
 @property (assign) float minHeight;
-@property (nonatomic, assign) UIImage *backgroundImage;
+//@property (nonatomic, assign) UIImage *backgroundImage;
 @property (nonatomic, assign) SEL onTouch;
 @property (assign) BOOL shouldAnimate;
 @property (assign) BOOL isWindow;
@@ -52,6 +58,10 @@ typedef void (^YRTapBlock)(void);
 + (YRDropdownView *)showDropdownInView:(UIView *)view
                                  title:(NSString *)title
                                 detail:(NSString *)detail;
+
+// MARCO
+//+ (YRDropdownView *)showDropdownInView:(UIView *)view title:(NSString *)title detail:(NSString *)detail image:(UIImage *)image style:(YRDropdownViewStyle)style;
+
 
 + (YRDropdownView *)showDropdownInView:(UIView *)view
                                  title:(NSString *)title
@@ -81,5 +91,8 @@ typedef void (^YRTapBlock)(void);
 - (void)flipViewAccordingToStatusBarOrientation:(NSNotification *)notification;
 - (void)show:(BOOL)animated;
 - (void)hide:(BOOL)animated;
+
+#pragma mark - MARCO
++ (void)setBackgroundImage:(UIImage *)image;
 
 @end

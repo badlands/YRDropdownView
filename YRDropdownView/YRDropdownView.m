@@ -37,8 +37,8 @@
 @synthesize titleText;
 @synthesize detailText;
 @synthesize minHeight;
-@synthesize backgroundImage;
-@synthesize accessoryImage;
+//@synthesize backgroundImage;
+//@synthesize accessoryImage;
 @synthesize onTouch;
 @synthesize shouldAnimate;
 @synthesize isView;
@@ -48,6 +48,50 @@
 //TODO: Queue alerts, if multiple
 static YRDropdownView *currentDropdown = nil;
 
+#pragma mark - MARCO
+static UIImage *_backgroundImage; // MARCO
+
++ (void)setBackgroundImage:(UIImage *)image {
+    _backgroundImage = image;
+}
+
++ (UIImage *)imageWithColor:(UIColor *)color {
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
++ (YRDropdownView *)showDropdownInView:(UIView *)view title:(NSString *)title detail:(NSString *)detail image:(UIImage *)image style:(YRDropdownViewStyle)style {
+//    [YRDropdownView setStyle:style];
+    
+    [YRDropdownView showDropdownInView:view title:title detail:detail image:image animated:YES];
+}
+
++ (void)setStyle:(YRDropdownViewStyle)style {
+    switch (style) {
+        case YRDefaultStyle:
+            [YRDropdownView setBackgroundImage:[UIImage imageNamed:@"alert-bg-yellow.png"]];
+            break;
+            
+        case YRErrorStyle:
+            [YRDropdownView setBackgroundImage:[YRDropdownView imageWithColor:[UIColor redColor]]];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
+#pragma mark - Original
 + (YRDropdownView *)currentDropdownView
 {
     return currentDropdown;
@@ -126,13 +170,16 @@ static YRDropdownView *currentDropdown = nil;
         self.titleText = nil;
         self.detailText = nil;
         self.minHeight = 44.0f;
-        self.backgroundImage = [UIImage imageNamed:@"bg-yellow.png"];
+        if (!_backgroundImage)
+            _backgroundImage = [UIImage imageNamed:@"alert-bg-yellow.png"];
+        
         self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         
         titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
         detailLabel = [[UILabel alloc] initWithFrame:self.bounds];
         backgroundImageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        backgroundImageView.image = [self.backgroundImage stretchableImageWithLeftCapWidth:1 topCapHeight:self.backgroundImage.size.height/2];
+//        backgroundImageView.image = [self.backgroundImage stretchableImageWithLeftCapWidth:1 topCapHeight:self.backgroundImage.size.height/2];
+        backgroundImageView.image = [_backgroundImage stretchableImageWithLeftCapWidth:1 topCapHeight:_backgroundImage.size.height/2];
         backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
         accessoryImageView = [[UIImageView alloc] initWithFrame:self.bounds];
@@ -234,7 +281,7 @@ static YRDropdownView *currentDropdown = nil;
     
     [currentDropdown removeFromSuperview];
     
-    [currentDropdown release];
+//    [currentDropdown release];
     currentDropdown = nil;
 }
 
